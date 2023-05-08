@@ -61,11 +61,11 @@ class Item:
         data = cls.load_csv()
         for line in data:
             cls(
-                line['name'],
-                cls.string_to_number(line['price']),
-                cls.string_to_number(line['quantity'])
+	            line['name'],
+	            cls.string_to_number(line['price']),
+	            cls.string_to_number(line['quantity'])
             )
-        
+
     @staticmethod
     def string_to_number(number_str):
         if "." in number_str:

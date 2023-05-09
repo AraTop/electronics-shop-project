@@ -59,6 +59,7 @@ class Item:
     @classmethod
     def instantiate_from_csv(cls):
         data = cls.load_csv()
+        cls.all = []
         for line in data:
             cls(
 	            line['name'],

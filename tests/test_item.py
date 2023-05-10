@@ -31,3 +31,17 @@ def test_item6():
 def test_item7():
    user1 = Item("Валера", 5000, 10)
    assert user1.quantity == 10  
+
+def test_item8():
+   item = Item('Телефон', 10000, 5)
+   item.name = 'Смартфон'
+   assert item.name == 'Смартфон'
+
+def test_item9():
+   Item.instantiate_from_csv()
+   assert len(Item.all) == 5
+
+def test_item10():
+   assert Item.string_to_number('5') == 5
+   assert Item.string_to_number('5.0') == 5
+   assert Item.string_to_number('5.5') == 5

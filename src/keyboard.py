@@ -1,11 +1,16 @@
-class KeyBoard:
+from src.item import Item
+
+
+class Mixin:
+   pass
+
+
+class KeyBoard(Item,Mixin):
    language = None
 
-   def __init__(self,item, price, quantity) -> None:
+   def __init__(self,name, price, quantity) -> None:
+      super().__init__(name, price, quantity)
       self.language = "EN"
-      self.item = item
-      self.price = price
-      self.quantity = quantity
 
    def change_lang(self):
       if self.language == "EN":
@@ -17,7 +22,7 @@ class KeyBoard:
       return f"{self.language}"
 
    def __str__(self) -> str:
-      return f"{self.item}"
+      return f"{self.name}"
    
    @property
    def language_(self):

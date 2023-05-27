@@ -1,5 +1,11 @@
 import csv
 
+class EmptyException(Exception):
+    pass
+
+class errorInstantiate(Exception):
+    pass
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -55,23 +61,45 @@ class Item:
     @staticmethod
     def load_csv():
         data = []
-        with open('src/items.csv', 'r', encoding='windows-1251') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for item in reader:
-                data.append(item)
-            return data
-        
+        try:
+            with open('src/items.csv', 'r', encoding='windows-1251') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for item in reader:
+                    data.append(item)
+               
+                return data  
+            
+        except FileNotFoundError:    
+            if len(data) == 0:
+                raise EmptyException
+            
+        except KeyError:
+            if data in "quantity":
+                pass
+            elif data in "price":
+                pass
+            elif data in "name":
+                pass
+            else:
+                raise errorInstantiate
+
     @classmethod
     def instantiate_from_csv(cls):
-        data = cls.load_csv()
-        cls.all = []
-        for line in data:
-            cls(
-	            line['name'],
-	            cls.string_to_number(line['price']),
-	            cls.string_to_number(line['quantity'])
-            )
-
+        try:
+            data = cls.load_csv()
+            cls.all = []
+            for line in data:
+                cls(
+	                line['name'],
+	                cls.string_to_number(line['price']),
+	                cls.string_to_number(line['quantity'])
+                        )
+                
+        except EmptyException as e:
+            print("FileNotFoundError: Отсутствует файл item.csv")
+        except errorInstantiate as ex:
+            print("InstantiateCSVError Файл item.csv поврежден")
+            
     @staticmethod
     def string_to_number(number_str):
         if "." in number_str:

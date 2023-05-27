@@ -73,15 +73,9 @@ class Item:
             if len(data) == 0:
                 raise EmptyException
             
-        except KeyError:
-            if data in "quantity":
-                pass
-            elif data in "price":
-                pass
-            elif data in "name":
-                pass
-            else:
-                raise errorInstantiate
+        except:
+            if data in' name' 'price' 'quantity':
+                    raise errorInstantiate
 
     @classmethod
     def instantiate_from_csv(cls):

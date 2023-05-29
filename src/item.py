@@ -1,4 +1,5 @@
 import csv
+import os
 
 class EmptyException(Exception):
     pass
@@ -59,40 +60,42 @@ class Item:
             self.__name: str = name
 
     @staticmethod
-    def load_csv():
+
+    def load_csv(filename) -> list:
+        """
+        Получает данные из csv-файла
+        :return: Список словарей из строк csv-файла
+        """
         data = []
+        filedir = os.path.dirname(os.path.abspath(__file__))
         try:
-            with open('src/items.csv', 'r', encoding='windows-1251') as csvfile:
-                reader = csv.DictReader(csvfile)
-                for item in reader:
+            with open(os.path.join(f'{filedir}', filename), 'r', encoding='windows-1251') as csv_file:
+                csv_reader = csv.DictReader(csv_file)
+                for item in csv_reader:
                     data.append(item)
-               
-                return data  
-            
-        except FileNotFoundError:    
-            if len(data) == 0:
-                raise EmptyException
-            
+                return data
         except:
-            if data in' name' 'price' 'quantity':
-                    raise errorInstantiate
+            raise FileNotFoundError(f"Отсутствует файл {filename}")
 
     @classmethod
-    def instantiate_from_csv(cls):
-        try:
-            data = cls.load_csv()
-            cls.all = []
-            for line in data:
+    def instantiate_from_csv(cls) -> None:
+        """
+        Инициализирует экземпляры класса Item данными из файла src/items.csv
+        :return: None
+        """
+
+        filename = 'items.csv'
+        cls.all = []
+        data = cls.load_csv(filename)
+        for line in data:
+            try:
                 cls(
-	                line['name'],
-	                cls.string_to_number(line['price']),
-	                cls.string_to_number(line['quantity'])
-                        )
-                
-        except EmptyException as e:
-            print("FileNotFoundError: Отсутствует файл item.csv")
-        except errorInstantiate as ex:
-            print("InstantiateCSVError Файл item.csv поврежден")
+                    line['name'],
+                    cls.string_to_number(line['price']),
+                    cls.string_to_number(line['quantity'])
+                )
+            except:
+                raise InstantiateCSVError(f"Файл {filename} поврежден")
             
     @staticmethod
     def string_to_number(number_str):
